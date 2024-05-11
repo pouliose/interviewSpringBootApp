@@ -6,6 +6,7 @@ import com.agileactors.fintech.services.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -16,6 +17,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createAccount(Account account) {
+        account.setCreatedAt(LocalDateTime.now());
 
         return accountRepository.save(account);
     }
