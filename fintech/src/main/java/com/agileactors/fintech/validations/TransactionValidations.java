@@ -15,21 +15,20 @@ public class TransactionValidations {
 
     private final AccountService accountService;
 
-    public void validateTransaction(Transaction transaction) {
-
-        Optional<Account> sourceAccount = accountService.getAccount(transaction.getSourceAccountId());
+    public String validateTransaction(Transaction transaction) {
 
         String resultAccountsExistence = validateAccountsExistence(transaction);
-        log.info("resultAccountsExistence: " + resultAccountsExistence);
+        if(!resultAccountsExistence.isBlank()) return resultAccountsExistence;
 
         String resultAccountsAreTheSame = validateAccountsAreDifferent(transaction);
-        log.info("resultAccountsAreTheSame: " + resultAccountsAreTheSame);
+        if(!resultAccountsAreTheSame.isBlank()) return resultAccountsAreTheSame;
 
-        String resultBalanceSufficiency = validateTransactionAmount(transaction, sourceAccount);
-        log.info("resultBalanceSufficiency: " + resultBalanceSufficiency);
+        String resultBalanceSufficiency = validateTransactionAmount(transaction);
+        if(!resultBalanceSufficiency.isBlank()) return resultBalanceSufficiency;
+        return "";
     }
 
-    private String validateAccountsExistence(Transaction transaction) {
+    public String validateAccountsExistence(Transaction transaction) {
 
         Optional<Account> sourceAccount = accountService.getAccount(transaction.getSourceAccountId());
 
@@ -38,7 +37,7 @@ public class TransactionValidations {
         return createResponseMessageForAccountExistence(sourceAccount, targetAccount);
     }
 
-    private String validateAccountsAreDifferent(Transaction transaction) {
+    public String validateAccountsAreDifferent(Transaction transaction) {
         return transaction.getSourceAccountId().equals(transaction.getTargetAccountId()) ? "Source and target account are the same." : "";
     }
 
@@ -57,7 +56,9 @@ public class TransactionValidations {
         return result;
     }
 
-    public String validateTransactionAmount(Transaction transaction, Optional<Account> sourceAccount) {
+    public String validateTransactionAmount(Transaction transaction) {
+
+        Optional<Account> sourceAccount = accountService.getAccount(transaction.getSourceAccountId());
 
         return checkCalculatedTransferAmount(transaction, sourceAccount);
 
