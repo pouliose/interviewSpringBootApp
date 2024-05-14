@@ -2,10 +2,7 @@ package com.agileactors.fintech.domain.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
@@ -17,6 +14,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name = "accounts")
 public class Account {
