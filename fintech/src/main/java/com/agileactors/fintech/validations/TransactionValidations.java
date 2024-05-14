@@ -23,6 +23,9 @@ public class TransactionValidations {
         String resultAccountsAreTheSame = validateAccountsAreDifferent(transaction);
         if(!resultAccountsAreTheSame.isBlank()) return resultAccountsAreTheSame;
 
+        String resultCurrencyOfAccountsAndTransactionAreTheSame = validateCurrencyOfAccountsAndTransactionAreTheSame(transaction);
+        if(!resultCurrencyOfAccountsAndTransactionAreTheSame.isBlank()) return resultCurrencyOfAccountsAndTransactionAreTheSame;
+
         String resultBalanceSufficiency = validateTransactionAmount(transaction);
         if(!resultBalanceSufficiency.isBlank()) return resultBalanceSufficiency;
         return "";
@@ -55,6 +58,29 @@ public class TransactionValidations {
         }
         return result;
     }
+
+    private String validateCurrencyOfAccountsAndTransactionAreTheSame(Transaction transaction) {
+        String result;
+
+        Optional<Account> sourceAccount = accountService.getAccount(transaction.getSourceAccountId());
+        Optional<Account> targetAccount = accountService.getAccount(transaction.getTargetAccountId());
+
+        String resultCurrencyOfAccounts = createResponseMessageForAccountCurrency(sourceAccount, targetAccount);
+
+        if(resultCurrencyOfAccounts.isBlank()){
+            result = sourceAccount.get().getCurrency().equals(transaction.getCurrency()) ? "" : "Currency of transaction differs to that of accounts";
+        } else {
+            result = resultCurrencyOfAccounts;
+        }
+
+        return result;
+    }
+
+    private String createResponseMessageForAccountCurrency(Optional<Account> sourceAccount, Optional<Account> targetAccount) {
+
+        return sourceAccount.get().getCurrency().equals(targetAccount.get().getCurrency()) ? "" : "Source and target accounts currency are different";
+    }
+
 
     public String validateTransactionAmount(Transaction transaction) {
 
