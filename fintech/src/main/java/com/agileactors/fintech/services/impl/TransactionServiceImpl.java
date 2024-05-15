@@ -43,13 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
         Optional<Account> targetAccount = accountRepository.findById(transaction.getTargetAccountId());
         targetAccount.map(a -> a.getTransactions().add(transaction));
 
-        Transaction transactionSaved = transactionRepository.save(transaction);
-        Optional<Account> sourceAccount2 = accountRepository.findById(transaction.getSourceAccountId());
-        if(sourceAccount2.isPresent()){
-            sourceAccount2.get().getTransactions().add(transaction);
-            accountService.update(sourceAccount2.get().getId(),transaction);
-        }
-        return transactionSaved;
+        return transactionRepository.save(transaction);
     }
 
     private static void updateSourceAccountBalance(Transaction transaction, AccountService accountService, AccountRepository accountRepository) {
