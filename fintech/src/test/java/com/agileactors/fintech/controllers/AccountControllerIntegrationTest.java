@@ -33,7 +33,7 @@ public class AccountControllerIntegrationTest {
     }
 
     @Test
-    public void testThatCreateAccountSuccessfullyReturnsHttp201Create() throws Exception {
+    public void testThatCreateAccountSuccessfullyReturnsHttp201Created() throws Exception {
         Account accountA = CreateTestDataUtil.createTestAccountA();
         String testAccountAJson = objectMapper.writeValueAsString(accountA);
 
