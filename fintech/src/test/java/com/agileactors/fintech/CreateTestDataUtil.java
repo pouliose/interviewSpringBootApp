@@ -29,4 +29,13 @@ public class CreateTestDataUtil {
                 .currency("USD")
                 .build();
     }
+
+    public static Transaction createTestTransactionB(String sourceId, String targetId) {
+        return Transaction.builder()
+                .sourceAccountId(sourceId)
+                .targetAccountId(targetId)
+                .amount(new BigDecimal(9))
+                .currency("GBR")
+                .build();
+    }
 }
