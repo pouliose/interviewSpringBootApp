@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  fintech:
+    depends_on:
+      - mysqldb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    env_file: ./.env
+    image: fintech-springboot
+    container_name: fintech-springboot
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/my_database?sslmode=disable
+      SPRING_DATASOURCE_USERNAME: my_user
+      SPRING_DATASOURCE_PASSWORD: my_password
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+    volumes:
+      - ./.m2:/root/.m2
+    stdin_open: true
+    tty: true
+  mysqldb:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: my_root_password
+        MYSQL_DATABASE: my_database
+        MYSQL_USER: my_user
+        MYSQL_PASSWORD: my_password
+    ports:
+      - "3306:3306"
