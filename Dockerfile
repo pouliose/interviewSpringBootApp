@@ -1,8 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM maven:3.9.6-amazoncorretto-21-al2023
 
-WORKDIR /fintech
-
 # Copy the pom.xml file first and run mvn dependency:go-offline
 # This helps with Docker caching
 COPY pom.xml .
