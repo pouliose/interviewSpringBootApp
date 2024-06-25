@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/transfer")
+@RequestMapping("api/transfers")
 @AllArgsConstructor
 public class TransactionController {
     private TransactionService transactionService;

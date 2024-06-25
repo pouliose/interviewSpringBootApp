@@ -25,7 +25,8 @@ public class AccountController {
     public ResponseResult<Account> getAccount(@PathVariable("accountId") String accountId) {
         Optional<Account> account = accountService.getAccount(accountId);
 
-        return account.map(value -> new ResponseResult<>(value, HttpStatus.OK, null)).orElseGet(() -> new ResponseResult<>(null, HttpStatus.NOT_FOUND, null));
+        return account.map(value -> new ResponseResult<>(value, HttpStatus.OK, null))
+                .orElseGet(() -> new ResponseResult<>(null, HttpStatus.NOT_FOUND, null));
     }
 
 }
